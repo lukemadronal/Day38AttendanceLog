@@ -6,6 +6,7 @@
 //  Copyright © 2015 Luke Madronal. All rights reserved.
 //
 #import "Parse/Parse.h"
+#import <EstimoteSDK/EstimoteSDK.h>
 #ifndef AttendanceLog_Bridging_Header_h
 #define AttendanceLog_Bridging_Header_h
 

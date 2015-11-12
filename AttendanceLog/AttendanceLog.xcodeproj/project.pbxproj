@@ -12,6 +12,7 @@
 		01EEE43E1BF5057500162F51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EEE43C1BF5057500162F51 /* Main.storyboard */; };
 		01EEE4401BF5057500162F51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01EEE43F1BF5057500162F51 /* Assets.xcassets */; };
 		01EEE4431BF5057500162F51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01EEE4411BF5057500162F51 /* LaunchScreen.storyboard */; };
+		01FB0E851BF509D8005938CC /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FB0E841BF509D8005938CC /* EstimoteSDK.framework */; };
 		9B7A3824E202F638FDF25B9B /* Pods_AttendanceLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FBBB0D53AFDA51B3309998 /* Pods_AttendanceLog.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 		01EEE4421BF5057500162F51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01EEE4441BF5057500162F51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01FB0E831BF50862005938CC /* AttendanceLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AttendanceLog-Bridging-Header.h"; sourceTree = "<group>"; };
+		01FB0E841BF509D8005938CC /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteSDK.framework; sourceTree = "<group>"; };
 		896BC9AB174C1A694905D78C /* Pods-AttendanceLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AttendanceLog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AttendanceLog/Pods-AttendanceLog.debug.xcconfig"; sourceTree = "<group>"; };
 		A5FBBB0D53AFDA51B3309998 /* Pods_AttendanceLog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AttendanceLog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA50AF314D089339F1A9355A /* Pods-AttendanceLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AttendanceLog.release.xcconfig"; path = "Pods/Target Support Files/Pods-AttendanceLog/Pods-AttendanceLog.release.xcconfig"; sourceTree = "<group>"; };
@@ -35,6 +37,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B7A3824E202F638FDF25B9B /* Pods_AttendanceLog.framework in Frameworks */,
+				01FB0E851BF509D8005938CC /* EstimoteSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,8 +65,9 @@
 		01EEE4371BF5057500162F51 /* AttendanceLog */ = {
 			isa = PBXGroup;
 			children = (
-				01EEE4381BF5057500162F51 /* AppDelegate.swift */,
+				01FB0E841BF509D8005938CC /* EstimoteSDK.framework */,
 				01FB0E831BF50862005938CC /* AttendanceLog-Bridging-Header.h */,
+				01EEE4381BF5057500162F51 /* AppDelegate.swift */,
 				01EEE43A1BF5057500162F51 /* ViewController.swift */,
 				01EEE43C1BF5057500162F51 /* Main.storyboard */,
 				01EEE43F1BF5057500162F51 /* Assets.xcassets */,
@@ -328,6 +332,10 @@
 			baseConfigurationReference = 896BC9AB174C1A694905D78C /* Pods-AttendanceLog.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AttendanceLog",
+				);
 				INFOPLIST_FILE = AttendanceLog/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LAM.AttendanceLog;
@@ -340,6 +348,10 @@
 			baseConfigurationReference = EA50AF314D089339F1A9355A /* Pods-AttendanceLog.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AttendanceLog",
+				);
 				INFOPLIST_FILE = AttendanceLog/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LAM.AttendanceLog;

@@ -13,6 +13,9 @@ MINIMUM requirements for this entire assignment:
 * When the day is done, they should hold their device near the beacon again and it should mark their attendance as done
 * This implies that the app will also need Parse Login to know who the person is
 
+HARD MODE requirements for this project:
+* Present the user with a local notification (that's a thing, and we haven't done it yet, so you'll have to look it up) say that they entered The Iron Yard
+
 ## Day 33 Homework - Part 2
 ### Weekly News
 

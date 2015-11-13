@@ -99,17 +99,30 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
         checkedIn["userStatus"] = currentUser.username!+inOut
         checkedIn.saveInBackgroundWithBlock({ (success,error) -> Void in
             if success {
-                let alert = UIAlertController(title: "Checked In!", message: "You're in! Have a great day", preferredStyle: .Alert)
+                let alert = UIAlertController(title: "Checked \(inOut)!", message: "You're \(inOut)! Have a great day", preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         })
     }
     
+    //    func checkInOut(currentUser: PFUser) {
+    //        let checkedIn = PFObject(className: "checkedIn")
+    //        checkedIn.ACL = PFACL(user: currentUser)
+    //        checkedIn["userStatus"] = currentUser.username!+inOut
+    //        checkedIn.saveInBackgroundWithBlock({ (success,error) -> Void in
+    //            if success {
+    //                let alert = UIAlertController(title: "Checked Out!", message: "You're in! Have a great day", preferredStyle: .Alert)
+    //                alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+    //                self.presentViewController(alert, animated: true, completion: nil)
+    //            }
+    //        })
+    //    }
+    
     func fetchCurrentlySignedInUser() {
         if let uCurrentUser = PFUser.currentUser() {
             let query = PFQuery(className:"checkedIn")
-            query.whereKey("userStatus", equalTo:uCurrentUser.username!+"In")
+            query.addDescendingOrder("createdAt")
             query.findObjectsInBackgroundWithBlock {
                 (objects: [PFObject]?, error: NSError?) -> Void in
                 
@@ -120,10 +133,20 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
                     if (objects!.count == 0) {
                         self.newDataRecieved(uCurrentUser, inOut: "In")
                     } else if let uObjects = objects {
-                        print("userIn is \(String(uObjects[0]["userIn"]))")
-                        if !(String(uObjects[0]["userStatus"]) == uCurrentUser.username!+"In") {
-                            print("there is stuff in the array")
+                        print("userIn is \(String(uObjects[0]["userStatus"]))")
+                        if (String(uObjects[0]["userStatus"]) == uCurrentUser.username!+"Out") {
+                            print("signing in")
                             self.newDataRecieved(uCurrentUser,inOut: "In")
+                        } else {
+                            let alert = UIAlertController(title: "Status Found", message: "You are currently checked in, would you like to check out?", preferredStyle: .Alert)
+                            
+                            alert.addAction(UIAlertAction(title: "Check Out", style: .Default, handler: { (action) -> Void in
+                                print("signing in and then out")
+                                self.newDataRecieved(uCurrentUser,inOut: "Out")
+                            }))
+                            
+                            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+                            self.presentViewController(alert, animated: true, completion: nil)
                         }
                     } else {
                         print("got into nothing in the array")
@@ -143,7 +166,7 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
     func fetchCurrentlySignedOutUser() {
         if let uCurrentUser = PFUser.currentUser() {
             let query = PFQuery(className:"checkedIn")
-            query.whereKey("userStatus", equalTo:uCurrentUser.username!+"Out")
+            query.addDescendingOrder("createdAt")
             query.findObjectsInBackgroundWithBlock {
                 (objects: [PFObject]?, error: NSError?) -> Void in
                 
@@ -151,13 +174,15 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
                     // The find succeeded.
                     print("Successfully retrieved \(objects!.count) scores.")
                     
-                    if (objects!.count == 0) {
-                        self.newDataRecieved(uCurrentUser,inOut: "Out")
-                    } else if let uObjects = objects {
-                        print("userIn is \(String(uObjects[0]["userIn"]))")
-                        if !(String(uObjects[0]["userIn"]) == uCurrentUser.username!+"Out") {
-                            print("there is stuff in the array")
+                    if let uObjects = objects {
+                        print("userStatus is \(String(uObjects[0]["userStatus"]))")
+                        if (String(uObjects[0]["userStatus"]) == uCurrentUser.username!+"In") {
+                            print("signing in")
                             self.newDataRecieved(uCurrentUser,inOut: "Out")
+                        } else {
+                            let alert = UIAlertController(title: "Status Found", message: "You already checked out! Have a great day!", preferredStyle: .Alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                            self.presentViewController(alert, animated: true, completion: nil)
                         }
                     } else {
                         print("got into nothing in the array")

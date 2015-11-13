@@ -32,7 +32,7 @@ extension AppDelegate {
     func beaconManager(manager: AnyObject, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
         if beacons.count > 0 {
             let nearestBeacon = beacons[0]
-            //if region != lastRegion {
+            if region != lastRegion {
             switch nearestBeacon.proximity {
             case .Immediate:
                 dispatch_async(dispatch_get_main_queue()) {
@@ -52,7 +52,7 @@ extension AppDelegate {
                 print("Ranged unknown \(region.identifier) beacon")
             }
             lastRegion = region
-            //}
+            }
         }
     }
     

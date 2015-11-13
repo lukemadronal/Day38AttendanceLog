@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ESTBeaconManagerDelegate 
     let beaconManager = ESTBeaconManager()
     var lastRegion: CLBeaconRegion?
     
+    var lastDateMint :NSDate!
+    var lastDateBlue :NSDate!
+    
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Parse.setApplicationId("xBguYb7K8F3qt2gEmhzkmLrUnPUv4Nqo3gjUmmd6",
@@ -29,29 +32,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ESTBeaconManagerDelegate 
 }
 
 extension AppDelegate {
+    
     func beaconManager(manager: AnyObject, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
         if beacons.count > 0 {
             let nearestBeacon = beacons[0]
-            if region != lastRegion {
-            switch nearestBeacon.proximity {
-            case .Immediate:
-                dispatch_async(dispatch_get_main_queue()) {
-                    if (region.identifier == "MintBeacon") {
-                        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "recievedDataFromBlue", object: nil))
-                    } else if (region.identifier == "BlueBeacon") {
-                        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "recievedDataFromMint", object: nil))
+            if (region != lastRegion) {
+                switch nearestBeacon.proximity {
+                case .Immediate:
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let fiveMinutesAgo = NSDate(timeInterval: -60 * 5, sinceDate: NSDate())
+                        if let _ = self.lastDateBlue {
+                            
+                        } else {
+                            self.lastDateBlue = NSDate(timeInterval: -60 * 6, sinceDate: NSDate())
+                        }
+                        if let _ = self.lastDateMint {
+                            
+                        } else {
+                            self.lastDateMint = NSDate(timeInterval: -60 * 6, sinceDate: NSDate())
+                        }
+                        if (region.identifier == "MintBeacon" && self.lastDateMint.compare(fiveMinutesAgo) == NSComparisonResult.OrderedAscending) {
+                            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "recievedDataFromBlue", object: nil))
+                        } else if (region.identifier == "BlueBeacon" && self.lastDateBlue.compare(fiveMinutesAgo) == NSComparisonResult.OrderedAscending) {
+                            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "recievedDataFromMint", object: nil))
+                        }
+                        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "recievedDataFromServer", object: nil))
                     }
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "recievedDataFromServer", object: nil))
+                    print("Ranged Immediate \(region.identifier) beacon")
+                case .Near:
+                    print("Ranged near \(region.identifier) beacon")
+                case .Far:
+                    print("Ranged far \(region.identifier) beacon")
+                case .Unknown:
+                    print("Ranged unknown \(region.identifier) beacon")
                 }
-                print("Ranged Immediate \(region.identifier) beacon")
-            case .Near:
-                print("Ranged near \(region.identifier) beacon")
-            case .Far:
-                print("Ranged far \(region.identifier) beacon")
-            case .Unknown:
-                print("Ranged unknown \(region.identifier) beacon")
-            }
-            lastRegion = region
+                lastRegion = region
             }
         }
     }

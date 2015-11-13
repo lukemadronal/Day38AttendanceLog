@@ -13,6 +13,9 @@ import Parse
 class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate  {
     //@IBOutlet var loginButton :UIBarButtonItem!
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
+    
     //MARK: - User Default Methods
     func setUsernameDefault(username: String) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -132,10 +135,12 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
                     
                     if (objects!.count == 0) {
                         self.newDataRecieved(uCurrentUser, inOut: "In")
+                        self.appDelegate.lastDateMint = NSDate()
                     } else if let uObjects = objects {
                         print("userIn is \(String(uObjects[0]["userStatus"]))")
                         if (String(uObjects[0]["userStatus"]) == uCurrentUser.username!+"Out") {
                             print("signing in")
+                            self.appDelegate.lastDateMint = NSDate()
                             self.newDataRecieved(uCurrentUser,inOut: "In")
                         } else {
                             let alert = UIAlertController(title: "Status Found", message: "You are currently checked in, would you like to check out?", preferredStyle: .Alert)
@@ -143,6 +148,7 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
                             alert.addAction(UIAlertAction(title: "Check Out", style: .Default, handler: { (action) -> Void in
                                 print("signing in and then out")
                                 self.newDataRecieved(uCurrentUser,inOut: "Out")
+                                self.appDelegate.lastDateBlue = NSDate()
                             }))
                             
                             alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
@@ -179,7 +185,9 @@ class ViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpV
                         if (String(uObjects[0]["userStatus"]) == uCurrentUser.username!+"In") {
                             print("signing in")
                             self.newDataRecieved(uCurrentUser,inOut: "Out")
+                            self.appDelegate.lastDateBlue = NSDate()
                         } else {
+                            self.appDelegate.lastDateBlue = NSDate()
                             let alert = UIAlertController(title: "Status Found", message: "You already checked out! Have a great day!", preferredStyle: .Alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
                             self.presentViewController(alert, animated: true, completion: nil)
